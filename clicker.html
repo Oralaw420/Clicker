@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Clicker Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #87ceeb;
+        }
+        #block {
+            width: 200px;
+            height: 200px;
+            background-image: url('https://example.com/minecraft_block.png');
+            background-size: cover;
+            display: inline-block;
+            cursor: pointer;
+        }
+        #counter {
+            font-size: 2em;
+            margin: 20px;
+        }
+        #upgrades, #missions, #autoUpgrades {
+            margin-top: 30px;
+        }
+        .upgrade, .mission, .autoUpgrade {
+            margin: 10px;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .upgrade:disabled, .mission:disabled, .autoUpgrade:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minecraft Clicker Game</h1>
+    <div id="block"></div>
+    <div id="counter">Resources: 0</div>
+    <div id="upgrades">
+        <button id="upgrade1" class="upgrade" disabled>Pickaxe Upgrade (Cost: 10)</button>
+        <button id="upgrade2" class="upgrade" disabled>Axe Upgrade (Cost: 25)</button>
+        <button id="upgrade3" class="upgrade" disabled>Shovel Upgrade (Cost: 50)</button>
+    </div>
+    <div id="missions">
+        <button id="mission1" class="mission" disabled>Build a Crafting Table (Cost: 50)</button>
+        <button id="mission2" class="mission" disabled>Build a Furnace (Cost: 100)</button>
+    </div>
+    <div id="autoUpgrades">
+        <button id="autoUpgrade1" class="autoUpgrade" disabled>Hire Miner (Cost: 75)</button>
+        <button id="autoUpgrade2" class="autoUpgrade" disabled>Hire Lumberjack (Cost: 150)</button>
+    </div>
+    <script>
+        let resources = 0;
+        let clickValue = 1;
+        let resourcesPerSecond = 0;
+
+        const block = document.getElementById('block');
+        const counter = document.getElementById('counter');
+        const upgrade1 = document.getElementById('upgrade1');
+        const upgrade2 = document.getElementById('upgrade2');
+        const upgrade3 = document.getElementById('upgrade3');
+        const mission1 = document.getElementById('mission1');
+        const mission2 = document.getElementById('mission2');
+        const autoUpgrade1 = document.getElementById('autoUpgrade1');
+        const autoUpgrade2 = document.getElementById('autoUpgrade2');
+
+        block.addEventListener('click', () => {
+            resources += clickValue;
+            updateDisplay();
+        });
+
+        upgrade1.addEventListener('click', () => {
+            if (resources >= 10) {
+                resources -= 10;
+                clickValue += 1;
+                upgrade1.disabled = true;
+                updateDisplay();
+            }
+        });
+
+        upgrade2.addEventListener('click', () => {
+            if (resources >= 25) {
+                resources -= 25;
+                clickValue += 2;
+                upgrade2.disabled = true;
+                updateDisplay();
+            }
+        });
+
+        upgrade3.addEventListener('click', () => {
+            if (resources >= 50) {
+                resources -= 50;
+                clickValue += 3;
+                upgrade3.disabled = true;
+                updateDisplay();
+            }
+        });
+
+        mission1.addEventListener('click', () => {
+            if (resources >= 50) {
+                resources -= 50;
+                alert('You built a Crafting Table!');
+                mission1.disabled = true;
+                updateDisplay();
+            }
+        });
+
+        mission2.addEventListener('click', () => {
+            if (resources >= 100) {
+                resources -= 100;
+                alert('You built a Furnace!');
+                mission2.disabled = true;
+                updateDisplay();
+            }
+        });
+
+        autoUpgrade1.addEventListener('click', () => {
+            if (resources >= 75) {
+                resources -= 75;
+                resourcesPerSecond += 1;
+                autoUpgrade1.disabled = true;
+                updateDisplay();
+            }
+        });
+
+        autoUpgrade2.addEventListener('click', () => {
+            if (resources >= 150) {
+                resources -= 150;
+                resourcesPerSecond += 2;
+                autoUpgrade2.disabled = true;
+                updateDisplay();
+            }
+        });
+
+        function updateDisplay() {
+            counter.textContent = `Resources: ${resources}`;
+            upgrade1.disabled = resources < 10;
+            upgrade2.disabled = resources < 25;
+            upgrade3.disabled = resources < 50;
+            mission1.disabled = resources < 50;
+            mission2.disabled = resources < 100;
+            autoUpgrade1.disabled = resources < 75;
+            autoUpgrade2.disabled = resources < 150;
+        }
+
+        // Function to increment resources automatically
+        setInterval(() => {
+            resources += resourcesPerSecond;
+            updateDisplay();
+        }, 1000);
+    </script>
+</body>
+</html>
